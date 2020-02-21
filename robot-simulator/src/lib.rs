@@ -9,37 +9,96 @@ pub enum Direction {
     West,
 }
 
-pub struct Robot;
+pub struct Robot {
+    pos: (i32, i32),
+    drc: Direction,
+}
 
 impl Robot {
     pub fn new(x: i32, y: i32, d: Direction) -> Self {
-        unimplemented!("Create a robot at (x, y) ({}, {}) facing {:?}", x, y, d,)
+        Robot {
+            pos: (x, y),
+            drc: d,
+        }
     }
 
     pub fn turn_right(self) -> Self {
-        unimplemented!()
+        match self.drc {
+            Direction::North => Robot {
+                drc: Direction::East,
+                ..self
+            },
+            Direction::East => Robot {
+                drc: Direction::South,
+                ..self
+            },
+            Direction::South => Robot {
+                drc: Direction::West,
+                ..self
+            },
+            Direction::West => Robot {
+                drc: Direction::North,
+                ..self
+            },
+        }
     }
 
     pub fn turn_left(self) -> Self {
-        unimplemented!()
+        match self.drc {
+            Direction::North => Robot {
+                drc: Direction::West,
+                ..self
+            },
+            Direction::East => Robot {
+                drc: Direction::North,
+                ..self
+            },
+            Direction::South => Robot {
+                drc: Direction::East,
+                ..self
+            },
+            Direction::West => Robot {
+                drc: Direction::South,
+                ..self
+            },
+        }
     }
 
     pub fn advance(self) -> Self {
-        unimplemented!()
+        match self.drc {
+            Direction::North => Robot {
+                pos: (self.pos.0, self.pos.1 + 1),
+                ..self
+            },
+            Direction::East => Robot {
+                pos: (self.pos.0 + 1, self.pos.1),
+                ..self
+            },
+            Direction::South => Robot {
+                pos: (self.pos.0, self.pos.1 - 1),
+                ..self
+            },
+            Direction::West => Robot {
+                pos: (self.pos.0 - 1, self.pos.1),
+                ..self
+            },
+        }
     }
 
     pub fn instructions(self, instructions: &str) -> Self {
-        unimplemented!(
-            "Follow the given sequence of instructions: {}",
-            instructions
-        )
+        instructions.chars().fold(self, |res, action| match action {
+            'R' => res.turn_right(),
+            'L' => res.turn_left(),
+            'A' => res.advance(),
+            _ => panic!("err input instruction!"),
+        })
     }
 
     pub fn position(&self) -> (i32, i32) {
-        unimplemented!()
+        self.pos
     }
 
     pub fn direction(&self) -> &Direction {
-        unimplemented!()
+        &self.drc
     }
 }
