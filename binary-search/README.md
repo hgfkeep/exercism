@@ -1,5 +1,7 @@
 # Binary Search
 
+实现二分查找算法： 给定排好序的数组和带查找的key，返回key在数组中的索引位置。
+
 Implement a binary search algorithm.
 
 Searching a sorted collection is a common task. A dictionary is a sorted
