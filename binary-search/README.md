@@ -54,6 +54,16 @@ other provided functions can make your code cleaner and safer.
 
 ## For bonus points
 
+范型需满足：
+
+1. 获取特定索引的元素，
+2. 获取列表长度, 
+3. 能将Vec， 数组类型统一表示
+
+实现范型的思路：
+
+`T: AsRef<[E]>`， 约束T是一种Slice。
+
 Did you get the tests passing and the code clean? If you want to, there
 are some additional things you could try.
 
@@ -159,4 +169,5 @@ If you want to know more about Exercism, take a look at the [contribution guide]
 Wikipedia [http://en.wikipedia.org/wiki/Binary_search_algorithm](http://en.wikipedia.org/wiki/Binary_search_algorithm)
 
 ## Submitting Incomplete Solutions
+
 It's possible to submit an incomplete solution so you can see how others have completed the exercise.
