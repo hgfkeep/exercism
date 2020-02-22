@@ -1,5 +1,7 @@
 # Queen Attack
 
+判断8*8棋盘上，国际象棋中的两个皇后是否可以攻击对方。
+
 Given the position of two queens on a chess board, indicate whether or not they
 are positioned so that they can attack each other.
 
