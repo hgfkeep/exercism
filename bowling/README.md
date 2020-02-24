@@ -1,5 +1,7 @@
 # Bowling
 
+计算保龄球🎳的分数：保龄球是一种游戏，玩家可以掷一个沉重的球来击倒三角形排列的球瓶。编写代码以跟踪保龄球比赛的得分。
+
 Score a bowling game.
 
 Bowling is a game where players roll a heavy ball to knock down pins
@@ -16,15 +18,22 @@ cases for the tabulation of a frame.
   frame. In this case the score for the frame is the number of pins
   knocked down.
 
+* 开放局是指该局的得分小于10的分数。在这种情况下，本局的分数是被击倒的球瓶数。
+
 * A spare is where all ten pins are knocked down by the second
   throw. The total value of a spare is 10 plus the number of pins
   knocked down in their next throw.
+
+* 补中是所有十个球瓶被第二次击倒。补中总分数为10加下一次击倒的球瓶数。
 
 * A strike is where all ten pins are knocked down by the first
   throw. The total value of a strike is 10 plus the number of pins
   knocked down in the next two throws. If a strike is immediately
   followed by a second strike, then the value of the first strike
   cannot be determined until the ball is thrown one more time.
+
+* 全中是指全部是个球瓶一次击倒（不是补击）。全中的分数是10分加下两次击倒的球瓶数。
+  如果两次都是全中， 那么第一次全中的分数得等到第二球击完。
 
 Here is a three frame example:
 
@@ -46,6 +55,9 @@ calculate the total of the 10th frame. Scoring a strike or spare on
 the fill ball does not give the player more fill balls. The total
 value of the 10th frame is the total number of pins knocked down.
 
+游戏中的第十帧是一个特例。如果有人投出全中或补中，他们将得到一个补球。
+存在补球以计算第10帧的总得数。在补球这一击全中或者补中不会得到更多的球瓶。第10帧的总值为击倒的球瓶总数。
+
 For a tenth frame of X1/ (strike and a spare), the total value is 20.
 
 For a tenth frame of XXX (three strikes), the total value is 30.
@@ -57,8 +69,13 @@ support two operations:
 
 * `roll(pins : int)` is called each time the player rolls a ball.  The
   argument is the number of pins knocked down.
+
+  `roll(pins : int)` 玩家每次掷球都会被调用。参数是被击倒的球瓶数
+
 * `score() : int` is called only at the very end of the game.  It
   returns the total score for that game.
+
+  `score() : int`只会在游戏结束的时候调用，返回游戏的总得分。
 
 ## Rust Installation
 
