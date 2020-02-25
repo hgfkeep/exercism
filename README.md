@@ -1,6 +1,6 @@
 # exercism rust track
 
-本仓库是我解决exercism rust track的解法。
+**刷题[exercism rust track](https://exercism.io/my/tracks)**。
 
 [exercism](https://exercism.io/my/tracks) 是一个练习编程语言的平台，支持练习几十种编程语言，并和社区中的朋友一起讨论学习。
 

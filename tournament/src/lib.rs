@@ -1,66 +1,64 @@
-use std::collections::{BTreeMap, BTreeSet, HashMap};
-
+use std::cmp::Ordering;
+use std::collections::HashMap;
 //比赛次数
 #[derive(Debug)]
 struct Team {
+    name: String,
     win: i32,
     loss: i32,
     draw: i32,
 }
 
 impl Team {
-    fn new() -> Self {
-        Team {win: 0, loss: 0, draw: 0}
+    fn new(name: String) -> Self {
+        Team {
+            name: name,
+            win: 0,
+            loss: 0,
+            draw: 0,
+        }
+    }
+    fn points(&self) -> i32 {
+        self.win * 3 + self.draw
     }
 }
 
-///
-/// 1. 解析team -> score;
-/// 2. 排序构造BTreeMap：
-///     score -> BTreeSet<name>
-/// 3. 统计输出
-///
 pub fn tally(match_results: &str) -> String {
     let mut teams: HashMap<String, Team> = HashMap::new();
+
+    //处理每行输入
     match_results.split("\n").for_each(|s| {
-        println!("\nprocess-----------------\ninput: {}", s);
         if s.len() > 0 {
             let bat: Vec<&str> = s.split(';').collect();
             bat_parser(&mut teams, bat);
         }
     });
 
-    println!("all teams: {:?}", teams);
-
-    let mut matches: BTreeMap<i32, BTreeSet<String>> = BTreeMap::new();
-    teams.iter().for_each(|(name, team)| {
-        let score = team.win * 3 + team.draw;
-        matches
-            .entry(score)
-            .or_insert(BTreeSet::new())
-            .insert(name.clone());
+    //排序
+    let mut sorted_teams: Vec<&Team> = teams.values().collect();
+    sorted_teams.sort_by(|a, b| match a.points().cmp(&b.points()).reverse() {
+        Ordering::Equal => a.name.cmp(&b.name),
+        other => other,
     });
 
-    println!("sorted: {:?}", matches);
-
+    //输出
     let mut res: String = String::new();
     res.push_str("Team                           | MP |  W |  D |  L |  P");
-    matches.iter().rev().for_each(|(score, names)| {
-        if names.len() > 0 {
-            names.iter().for_each(|name| {
-                if let Some(team) = teams.get(name) {
-                    res.push('\n');
-                    let mp = team.win + team.loss + team.draw;
-                    res.extend(
-                        format!(
-                            "{:<31}|  {} |  {} |  {} |  {} |{:>3}",
-                            name, mp, team.win, team.draw, team.loss, score
-                        )
-                        .chars(),
-                    );
-                }
-            });
-        }
+    sorted_teams.iter().for_each(|team| {
+        res.push('\n');
+        let mp = team.win + team.loss + team.draw;
+        res.extend(
+            format!(
+                "{:<30} | {:>2} | {:>2} | {:>2} | {:>2} | {:>2}",
+                team.name,
+                mp,
+                team.win,
+                team.draw,
+                team.loss,
+                team.points()
+            )
+            .chars(),
+        );
     });
     res
 }
@@ -84,14 +82,18 @@ fn bat_parser(teams: &mut HashMap<String, Team>, bat: Vec<&str>) {
     }
 
     if win.len() > 0 {
-        let mut t = teams.entry(win).or_insert(Team::new());
+        let mut t = teams.entry(win.clone()).or_insert(Team::new(win));
         t.win += 1;
-        let mut t = teams.entry(los).or_insert(Team::new());
+        let mut t = teams.entry(los.clone()).or_insert(Team::new(los));
         t.loss += 1;
     } else {
-        let mut t = teams.entry(bat[0].to_string()).or_insert(Team::new());
+        let mut t = teams
+            .entry(bat[0].to_string())
+            .or_insert(Team::new(bat[0].to_string()));
         t.draw += 1;
-        let mut t = teams.entry(bat[1].to_string()).or_insert(Team::new());
+        let mut t = teams
+            .entry(bat[1].to_string())
+            .or_insert(Team::new(bat[1].to_string()));
         t.draw += 1;
     }
 }
