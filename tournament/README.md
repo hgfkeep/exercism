@@ -1,5 +1,7 @@
 # Tournament
 
+[中文](./README-zh.md)
+
 Tally the results of a small football competition.
 
 Based on an input file containing which team played against which and what the
@@ -25,9 +27,7 @@ A win earns a team 3 points. A draw earns 1. A loss earns 0.
 
 The outcome should be ordered by points, descending. In case of a tie, teams are ordered alphabetically.
 
-###
-
-Input
+## Input
 
 Your tallying program will receive input that looks like:
 
